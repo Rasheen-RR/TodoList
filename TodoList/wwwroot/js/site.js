@@ -14,3 +14,23 @@
     }
     window.addEventListener('online', update_status);
     window.addEventListener('offline', update_status);
+
+
+function copyToClipboard(text) {
+    if ('clipboard' in navigator) {
+        let clipboardAccess = false;
+        navigator.permissions.query({ name: 'clipboard-write' }).then((perms) => {
+            clipboardAccess = perms.state;
+            if (clipboardAccess === 'granted') {
+                navigator.clipboard.writeText(text)
+                console.log(text)
+            } else if (clipboardAccess === 'prompt') {
+
+            } else {
+                return
+            }
+        })
+    } else {
+
+    }
+}
