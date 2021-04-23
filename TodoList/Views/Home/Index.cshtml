@@ -2,7 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div id="showcase">
+    <div class="section-main container">
+        <h1>Todo.</h1>
+        <h2>Your todo items take center stage.</h2>
+        <p class="lead hide-on-small">
+            TodoList is the best way to organize your daily tasks as it will only show you the taks due in the next 24 hours so you can focus on them
+        </p>
+    </div>
 </div>
+
+
+<script>
+    var element = document.getElementById("myContainer");
+    element.classList.remove("container");
+</script>

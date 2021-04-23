@@ -22,12 +22,18 @@ namespace TodoList.Views
         }
 
         // GET: TodoItems
-        [Authorize]
-
         public async Task<IActionResult> Index()
         {
-            var userEmail = User.Identity.Name;
-            return View(await _context.TodoItem.Where(m => m.UserEmail == userEmail).ToListAsync());
+            if (User.Identity.IsAuthenticated)
+            {
+                var userEmail = User.Identity.Name;
+                return View(await _context.TodoItem.Where(m => m.UserEmail == userEmail).ToListAsync());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
 
         // GET: TodoItems/Details/5
