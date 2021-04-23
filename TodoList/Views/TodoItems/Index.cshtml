@@ -4,64 +4,44 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Todo List</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Addeddate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Done)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DoneDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
 
-            @if (item.DueDate > DateTime.Now && item.DueDate < DateTime.Now.AddDays(1) && !item.Done)
+<div class="main-grid">
+    <div>
+        <h4>Completed in the last 24 hours</h4>
+        <ul class="list-group todos mx-auto text-light">
+            @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserEmail)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                        <input class="copyToClipboard" type="button" value="📋"  onclick="copyToClipboard('@item.Title')"/>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Addeddate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DueDate)
-                    </td>
-                    <td>
-                        <div class="row">
-                            <div class="col-md-4">
+
+                @if (item.DoneDate > DateTime.Now.AddDays(-1) && item.DoneDate < DateTime.Now && item.Done)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span> @Html.DisplayFor(modelItem => item.Title)  <input class="copyToClipboard" type="button" value="📋" onclick="copyToClipboard('@item.Title')" /></span>
+                        </li>
+                 }
+              }
+         </ul>
+    </div>
+
+    <div>
+        <h4>Due in the next 24 hours</h4>
+        <ul class="list-group todos mx-auto text-light">
+            @foreach (var item in Model)
+            {
+                @if (item.DueDate > DateTime.Now && item.DueDate < DateTime.Now.AddDays(1) && !item.Done)
+                {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>@Html.DisplayFor(modelItem => item.Title)  <input class="copyToClipboard" type="button" value="📋" onclick="copyToClipboard('@item.Title')" /></span>
+                <span class="delete">
+                    @Html.DisplayFor(modelItem => item.DueDate)
+                </span>
+                    <span class="delete">
+                        <div class="">
+                            <div class="">
                                 <form asp-action="Change">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                     <div class="form-group" style="display:none;">
@@ -85,131 +65,31 @@
                                     <div class="form-group" style="display:none;">
                                         <input id="Done" name="Done" class="form-control" value="@item.Done.ToString()" />
                                     </div>
-                                    <div class="form-group form-check">
+                                    <div class="">
                                         <label class="form-check-label">
-                                            <input checked="@item.Done" class="check-box offline" type="checkbox" onchange="this.form.submit()">
+                                            Done? <input checked="@item.Done" class="check-box offline" type="checkbox" onchange="this.form.submit()">
                                         </label>
                                     </div>
 
                                 </form>
                             </div>
+
                         </div>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DoneDate)
-                    </td>
-                    <td>
+                    </span>
+                    <div>
                         <a asp-action="Edit" asp-route-id="@item.Id" class="offline">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.Id" class="offline">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id" class="offline">Delete</a>
-                    </td>
-                </tr>
+                    </div>
+            </li>
+
+
+                }
             }
-        }
-    </tbody>
-</table>
+        </ul>
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Addeddate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Done)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DoneDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-
-            @if (item.DoneDate < DateTime.Now && item.DoneDate > DateTime.Now.AddDays(-1) && item.Done)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserEmail)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                        <input class="copyToClipboard" type="button" value="📋" onclick="copyToClipboard('@item.Title')" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Addeddate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DueDate)
-                    </td>
-                    <td>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <form asp-action="Change">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <div class="form-group" style="display:none;">
-                                        <input id="Id" name="Id" class="form-control" value="@item.Id" />
-                                    </div>
-                                    <div class="form-group" style="display:none;">
-                                        <input id="UserEmail" name="UserEmail" class="form-control" value="@item.UserEmail" />
-                                    </div>
-                                    <div class="form-group" style="display:none;">
-                                        <input id="Title" name="Title" class="form-control" value="@item.Title" />
-                                    </div>
-                                    <div class="form-group" style="display:none;">
-                                        <input id="Description" name="Description" class="form-control" value="@item.Description" />
-                                    </div>
-                                    <div class="form-group" style="display:none;">
-                                        <input id="Addeddate" name="Addeddate" class="form-control" value="@item.Addeddate" />
-                                    </div>
-                                    <div class="form-group" style="display:none;">
-                                        <input id="DueDate" name="DueDate" class="form-control" value="@item.DueDate" />
-                                    </div>
-                                    <div class="form-group" style="display:none;">
-                                        <input id="Done" name="Done" class="form-control" value="@item.Done.ToString()" />
-                                    </div>
-                                    <div class="form-group form-check">
-                                        <label class="form-check-label">
-                                            <input checked="@item.Done" class="check-box offline" type="checkbox" onchange="this.form.submit()">
-                                        </label>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
-                    </td>
-
-
-
-
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="offline">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id" class="offline">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="offline">Delete</a>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+    </div>
+</div>
 
 
 
